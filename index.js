@@ -18,12 +18,14 @@ function forkRepo() {
       Authorization: `token ${getToken()}`
     }
   }
-  ).then(res => res.json()).then(json => showResults(json));
+  ).then(res => res.json())
+    .then(json => showResults(json));
 }
 
 function showResults(json) {
   //use this function to display the results from forking via the API
   const pElement = document.createElement('p');
+  //console.log(json)
   pElement.innerHTML = json.html_url;
   document.getElementById('results').appendChild(pElement)
 }
@@ -31,12 +33,29 @@ function showResults(json) {
 function createIssue() {
   //use this function to create an issue based on the values input in index.html
   const title = document.getElementById('title').value;
-  const text = document.getElementById('body').value;
-  console.log(title, text);
+  const body = document.getElementById('body').value;
+  const obj = {
+    title: title,
+    body: body
+  }
+  fetch(baseURL + `/repos/${user}/js-ajax-fetch-lab/issues`,
+  {
+    method: 'POST',
+    body: JSON.stringify(obj),
+    headers: {
+      Authorization: `token ${getToken()}`
+    }
+  }
+  ).then(res => res.json()).then(json => json);
 }
 
 function getIssues() {
   //once an issue is submitted, fetch all open issues to see the issues you are creating
+  fetch(baseURL + `/repos/${user}/js-ajax-fetch-lab/issues`, {
+    headers: {
+      Authorization: `token ${getToken()}`
+    }
+  })
 }
 
 console.log('JavaScipt loaded up!')
