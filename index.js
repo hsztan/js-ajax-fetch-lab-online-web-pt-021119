@@ -46,8 +46,9 @@ function createIssue() {
       Authorization: `token ${getToken()}`
     }
   }
-  ).then(res => res.json()).then(json => json);
+  ).then(res => res.json()).then(json => getIssues());
 }
+
 
 function getIssues() {
   //once an issue is submitted, fetch all open issues to see the issues you are creating
@@ -55,6 +56,16 @@ function getIssues() {
     headers: {
       Authorization: `token ${getToken()}`
     }
+  }).then(res => res.json())
+    .then(json => displayIssues(json))
+}
+
+function displayIssues(json) {
+  console.log(json)
+  const issues = json.forEach(issue => {
+    const pElement = document.createElement('p');
+    pElement.innerHTML = issue.title + " - " + issue.body;
+    document.getElementById('issues').appendChild(pElement)
   })
 }
 
